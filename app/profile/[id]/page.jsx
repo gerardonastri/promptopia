@@ -9,20 +9,23 @@ const ProfilePage = () => {
     
     const router = useRouter()
     const [posts, setPosts] = useState(null)
-    const id = window.location.pathname.split("/")[2]
+   
 
     useEffect(() => {
-      const getData = async () => {
-        try {
-          const res = await fetch(`/api/users/${id}/posts`)
-          const data = await res.json()
-          setPosts(data)
-        } catch (error) {
-          console.log(error);
+      if(window){
+        const getData = async () => {
+          const id = window.location.pathname.split("/")[2]
+          try {
+            const res = await fetch(`/api/users/${id}/posts`)
+            const data = await res.json()
+            setPosts(data)
+          } catch (error) {
+            console.log(error);
+          }
         }
-      }
-      if(id){
-        getData()
+        if(id){
+          getData()
+        }
       }
     }, [])
 

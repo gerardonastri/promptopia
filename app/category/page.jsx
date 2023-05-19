@@ -7,10 +7,12 @@ import { useSearchParams } from 'next/navigation';
 const Category = () => {
 
     const [data, setData] = useState(null)
-    const id = window.location.pathname.split("/")[2]
+   
 
     useEffect(() => {
+      if(window){
         const getPosts = async () => {
+          const id = window.location.pathname.split("/")[2]
           try {
               const res = await fetch(`/api/tag/${id}`)
               const resData = await res.json()
@@ -21,6 +23,7 @@ const Category = () => {
         }
          
         getPosts()
+      }
     }, [])
 
 
