@@ -7,13 +7,15 @@ import {signIn, signOut, useSession, getProviders} from 'next-auth/react'
 
 const Navbar = () => {
 
-  const isUserLogged = true;
+  const {data: session} = useSession()
+  
   const [providers, setProviders] = useState(null);
   const [toggleDropdown, setToggleDropdown] = useState(false)
 
   useEffect(() => {
     const setProviders2 = async () => {
       const res = await getProviders()
+
       setProviders(res)
     }
     setProviders2()
@@ -34,14 +36,14 @@ const Navbar = () => {
 
       {/* desktop navigation */}
       <div className="sm:flex hidden">
-        {isUserLogged ? (
+        {session?.user ? (
           <div className="flex gap-3 md:gap-5">
             <Link href="/create-post" className="black_btn">
               Create Post
             </Link>
             <button type="button" onClick={signOut} className="outline_btn">Sign Out</button>
             <Link href="/profile">
-              <Image src="/images/logo.svg" width={37} height={37} className="rounded-full" alt="profile"/>
+              <Image src={session?.user.image} width={37} height={37} className="rounded-full" alt="profile"/>
             </Link>
           
           </div>
@@ -60,9 +62,9 @@ const Navbar = () => {
 
       {/* mobile navigation */}
       <div className="sm:hidden flex relative">
-        {isUserLogged ? (
+        {session?.user ? (
           <div className="flex">
-            <Image src="/images/logo.svg" width={37} height={37}
+            <Image src={session?.user.image}  width={37} height={37}
              className="rounded-full" alt="profile"
               onClick={() => setToggleDropdown(prev => !prev)}
             />
